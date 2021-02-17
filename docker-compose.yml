@@ -4,6 +4,7 @@ services:
   projstatus:
     build: .
     container_name: projstatus
+    restart: always
     ports:
       - "8000:8000"
     environment:
