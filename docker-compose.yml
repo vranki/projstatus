@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  projstatus:
+    build: .
+    container_name: projstatus
+    ports:
+      - "8000:8000"
+    environment:
+      - REPO_NAME=TampereHacklab/Inventaario
+

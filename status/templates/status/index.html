@@ -1,0 +1,13 @@
+<html>
+    <head>
+        <title>{{ reponame }}</title>
+    </head>
+<h1 style="text-transform:uppercase">{{ reponame }}</h1>
+    <ul>
+        {% for domain in domains %}
+        <li>
+            <a href="{% url 'status' domain %}" style="text-transform:uppercase">{{ domain }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+</html>
