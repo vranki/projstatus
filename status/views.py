@@ -1,4 +1,4 @@
-from github import Github
+from github import Github, RateLimitExceededException
 import os
 
 from django.shortcuts import render
@@ -11,13 +11,20 @@ def index(request):
     domain = request.GET.get('domain')
     if domain:
         return status(request, domain)
-    context = { 'domains': GithubProject.list_domains(reponame) }
-    return render(request, 'status/index.html', context)
+    try:
+        context = { 'domains': GithubProject.list_domains(reponame) }
+        return render(request, 'status/index.html', context)
+    except RateLimitExceededException:
+        raise Http404(f"Rate limit exceeded, sorry!")
+
 
 def status(request, domain):
     reponame = os.environ.get("REPO_NAME")
-    issues, ok = GithubProject.get_domain(reponame, domain)
-    if issues or ok:
-        context = {'reponame': reponame, 'domain': domain, 'issues': issues, 'ok': ok }
-        return render(request, 'status/status.html', context)
-    raise Http404(f"No such domain {domain}")
+    try:
+        issues, ok = GithubProject.get_domain(reponame, domain)
+        if issues or ok:
+            context = {'reponame': reponame, 'domain': domain, 'issues': issues, 'ok': ok }
+            return render(request, 'status/status.html', context)
+        raise Http404(f"No such domain {domain}")
+    except RateLimitExceededException:
+        raise Http404(f"Rate limit exceeded, sorry!")
