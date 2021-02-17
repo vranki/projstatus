@@ -1,25 +1,28 @@
+<!DOCTYPE html>
 <html>
     <head>
         <title>{{ reponame }}/{{ domain }}</title>
     </head>
-<h1 style="text-transform:uppercase">{{ domain }}</h1>
-<ul>
-    {% for item, issues in issues.items %}
-    <li>
-        🚧 {{ item }}
-        <ul>
-            {% for issue in issues %}
-            <li>
-                <a href="{{ issue.html_url }}">{{issue.title}}</a>
-            </li>
-            {% endfor %}
-        </ul>
-    </li>
-    {% endfor %}
-    {% for item in ok %}
+<body style="background-color:#efefef;">
+    <h1 style="text-transform:uppercase">{{ domain }}</h1>
+    <ul>
+        {% for item, issues in issues.items %}
         <li>
-            ☑️ {{ item }}
+            🚧 {{ item }}
+            <ul>
+                {% for issue in issues %}
+                <li>
+                    <a href="{{ issue.html_url }}">{{issue.title}}</a>
+                </li>
+                {% endfor %}
+            </ul>
         </li>
-    {% endfor %}
+        {% endfor %}
+        {% for item in ok %}
+            <li>
+                ☑️ {{ item }}
+            </li>
+        {% endfor %}
     </ul>
+</body>
 </html>
