@@ -1,13 +1,13 @@
 FROM python:3.8
-RUN apt update
-RUN apt -y install gettext git python3-dev
 ENV PYTHONUNBUFFERED 1
-RUN pip install pipenv
-RUN mkdir /code
-RUN mkdir /code/static
+RUN apt update && apt install -y \
+      gettext \
+      python3-dev \
+    && rm -rf /var/lib/apt/lists/* \
+    && mkdir -p /code/static
 WORKDIR /code
-ADD . /code/
-WORKDIR /code
-RUN pipenv install
+COPY Pipfile /code/
+RUN pip install pipenv && pipenv install
+COPY . /code/
 ENTRYPOINT ["/code/entrypoint.sh"]
 
